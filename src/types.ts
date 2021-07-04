@@ -1,5 +1,6 @@
+// eslint-disable-next-line import/prefer-default-export
 export enum Page {
-  STARTING = 'starting',
+  START = 'start',
   QUIZ = 'quiz',
   RECOMMEND = 'recommend',
 }

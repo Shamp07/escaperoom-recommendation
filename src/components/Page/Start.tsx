@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Starting = () => (
+interface Props {
+  moveToQuiz(): void;
+}
+
+const Start = ({ moveToQuiz }: Props) => (
   <Root>
     <h1>
       방탈출 테마 추천
@@ -10,15 +14,16 @@ const Starting = () => (
       해당 페이지는 방탈출을 추천해주는 시스템입니다.
     </p>
     <div>
-      <button>시작하기!</button>
+      <button type="button" onClick={moveToQuiz}>시작하기!</button>
     </div>
   </Root>
-)
+);
 
 const Root = styled.div`
   & > h1 {
     font-size: 3.1rem;
     margin-bottom: 1rem;
+    text-align: center;
   }
 
   & > p {
@@ -35,6 +40,7 @@ const Root = styled.div`
     align-items: center;
     max-width: 25rem;
     width: 100%;
+    margin: auto;
 
     & > button {
       background: transparent;
@@ -54,4 +60,4 @@ const Root = styled.div`
   }
 `;
 
-export default Starting;
+export default Start;

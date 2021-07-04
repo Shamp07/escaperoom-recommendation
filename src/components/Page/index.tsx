@@ -1,21 +1,30 @@
-import React, { memo } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-import Starting from './Starting';
-import * as T from '^/types';
+import * as T from '@types';
+import Start from './Start';
+import Quiz from './Quiz';
+import Recommend from './Recommend';
 
+const Page = () => {
+  const [page, setPage] = useState<T.Page>(T.Page.START);
 
-interface Props {
-  page: T.Page;
-}
+  const moveToQuiz = useCallback(() => {
+    setPage(T.Page.QUIZ);
+  }, []);
 
-const Page = ({ page }: Props) => {
   const content = (() => {
-    switch(page) {
-      case T.Page.STARTING:
-        return <Starting />;
+    switch (page) {
+      case T.Page.START:
+        return <Start moveToQuiz={moveToQuiz} />;
+      case T.Page.QUIZ:
+        return <Quiz />;
+      case T.Page.RECOMMEND:
+        return <Recommend />;
+      default:
+        return <Start moveToQuiz={moveToQuiz} />;
     }
-  })( );
+  })();
 
   return (
     <Root>
@@ -35,4 +44,4 @@ const Root = styled.div`
   flex-direction: column;
 `;
 
-export default memo(Page);
+export default Page;
