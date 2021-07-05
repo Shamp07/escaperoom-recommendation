@@ -10,6 +10,7 @@ const config: Configuration = {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@types': path.resolve(__dirname, 'src/types'),
+      '@atoms': path.resolve(__dirname, 'src/components/atoms'),
     },
   },
 

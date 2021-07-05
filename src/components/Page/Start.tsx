@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Button from '@atoms/Button';
+
 interface Props {
   moveToQuiz(): void;
 }
@@ -13,9 +15,7 @@ const Start = ({ moveToQuiz }: Props) => (
     <p>
       해당 페이지는 방탈출을 추천해주는 시스템입니다.
     </p>
-    <div>
-      <button type="button" onClick={moveToQuiz}>시작하기!</button>
-    </div>
+    <Button text="시작하기!" onClick={moveToQuiz} />
   </Root>
 );
 
@@ -32,31 +32,6 @@ const Root = styled.div`
     line-height: 1.2em;
     text-align: center;
     margin-bottom: 1.5rem;
-  }
-
-  & > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 25rem;
-    width: 100%;
-    margin: auto;
-
-    & > button {
-      background: transparent;
-      border: 1px solid #fff;
-      color: #fff;
-      padding: 1rem;
-      width: 100%;
-      transition: .2s;
-      font-family: inherit;
-
-      &:hover {
-        background: #fff;
-        color: #000;
-        cursor: pointer;
-      }
-    }
   }
 `;
 

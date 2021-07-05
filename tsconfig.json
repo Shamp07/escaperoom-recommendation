@@ -7,9 +7,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@types": ["src/types"]
+      "@types": ["src/types"],
+      "@atoms/*": ["src/components/atoms/*"],
     }
   },
   "include": [
