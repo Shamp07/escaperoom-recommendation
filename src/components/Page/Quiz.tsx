@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import tempData from './question.json';
 import Button from '@atoms/Button';
+import tempData from './question.json';
 
 interface Question {
   readonly id: number;
@@ -15,41 +15,56 @@ interface Answer {
   text: string;
 }
 
-const Quiz = () => {
+interface Props {
+  moveToStart(): void;
+  moveToRecommend(): void;
+}
+
+const Quiz = ({ moveToStart, moveToRecommend }: Props) => {
   const [questions, setQuestions] = useState<Question[]>(tempData);
   const [index, setIndex] = useState(0);
-
-  const next = useCallback(() => {
-    setIndex((prevState) => prevState + 1);
-  }, []);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const isLast = index === questions.length - 1;
 
   const prev = useCallback(() => {
+    if (!index) moveToStart();
+
     setIndex((prevState) => prevState - 1);
+  }, [!index]);
+
+  const next = useCallback(() => {
+    if (isLast) moveToRecommend();
+
+    setIndex((prevState) => prevState + 1);
+  }, [isLast]);
+
+  const onCheck = useCallback((id: number) => {
+    setAnswers((prevState) => [...prevState, id]);
   }, []);
 
   const answerList = useMemo(() => (
     questions[index].answers.map(({ id, text }) => (
-      <Button key={id} text={text} onClick={() => {}} />
+      <Button key={id} id={id} text={text} onCheck={onCheck} isChecked={answers.includes(id)} />
     ))
-  ), [index]);
+  ), [index, answers]);
 
   return (
     <>
-      <QuizTitle>
+      <Title>
         {questions[index].text}
-      </QuizTitle>
+      </Title>
       <AnswerWrapper>
         {answerList}
       </AnswerWrapper>
-      <Footer>
+      <ButtonWrapper>
         <Button text="이전" onClick={prev} />
         <Button text="다음" onClick={next} />
-      </Footer>
+      </ButtonWrapper>
     </>
   );
 };
 
-const QuizTitle = styled.h1`
+const Title = styled.h1`
   font-size: 3.1rem;
   margin-bottom: 2rem;
 `;
@@ -63,11 +78,11 @@ const AnswerWrapper = styled.div`
   }
 `;
 
-const Footer = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   max-width: 25rem;
-  
+
   & > div:first-of-type > button {
     border-right: 0;
   }
