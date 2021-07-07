@@ -8,6 +8,7 @@ import Recommend from './Recommend';
 
 const Page = () => {
   const [page, setPage] = useState<T.Page>(T.Page.START);
+  const [answer, setAnswer] = useState<T.Answer>({});
 
   const moveToStart = useCallback(() => {
     setPage(T.Page.START);
@@ -26,9 +27,16 @@ const Page = () => {
       case T.Page.START:
         return <Start moveToQuiz={moveToQuiz} />;
       case T.Page.QUIZ:
-        return <Quiz moveToStart={moveToStart} moveToRecommend={moveToRecommend} />;
+        return (
+          <Quiz
+            moveToStart={moveToStart}
+            moveToRecommend={moveToRecommend}
+            answer={answer}
+            setAnswer={setAnswer}
+          />
+        );
       case T.Page.RECOMMEND:
-        return <Recommend />;
+        return <Recommend answer={answer} />;
       default:
         return <Start moveToQuiz={moveToQuiz} />;
     }

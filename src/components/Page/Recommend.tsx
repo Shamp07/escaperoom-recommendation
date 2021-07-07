@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Recommend = () => (
+import * as T from '@types';
+
+interface Props {
+  answer: T.Answer;
+}
+
+const Recommend = ({ answer }: Props) => (
   <>
     <Title>이 테마를 추천드립니다!</Title>
   </>

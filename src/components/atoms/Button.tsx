@@ -1,41 +1,23 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  readonly id?: number;
   readonly text: string;
-  readonly isChecked?: boolean;
-  onClick?(): void;
-  onCheck?(id: number): void;
+  onClick(): void;
 }
 
 const Button = ({
-  id, text, isChecked, onClick, onCheck,
-}: Props) => {
-  const onClickCurrent = (id !== undefined && id >= 0 && onCheck) ? useCallback(() => {
-    onCheck(id);
-  }, [id]) : onClick;
-
-  return (
-    <Root>
-      <RowButton
-        isChecked={Boolean(isChecked)}
-        type="button"
-        onClick={onClickCurrent}
-      >
-        {isChecked && 'v'}
-        {text}
-      </RowButton>
-    </Root>
-  );
-};
-
-Button.defaultProps = {
-  id: undefined,
-  isChecked: false,
-  onClick: undefined,
-  onCheck: undefined,
-};
+  text, onClick,
+}: Props) => (
+  <Root>
+    <RowButton
+      type="button"
+      onClick={onClick}
+    >
+      {text}
+    </RowButton>
+  </Root>
+);
 
 const Root = styled.div`
   display: flex;
@@ -45,30 +27,20 @@ const Root = styled.div`
   width: 100%;
 `;
 
-interface CheckProp {
-  isChecked: boolean;
-}
+const RowButton = styled.button`
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 1rem;
+  width: 100%;
+  transition: .2s;
+  font-family: inherit;
 
-const RowButton = styled.button<CheckProp>(({ isChecked }) => ({
-  background: 'transparent',
-  border: '1px solid #fff',
-  color: '#fff',
-  padding: '1rem',
-  width: '100%',
-  transition: '.2s',
-  fontFamily: 'inherit',
-
-  '&:hover': {
-    background: '#fff',
-    color: '#000',
-    cursor: 'pointer',
-  },
-
-  ...(isChecked ? ({
-    background: '#fff',
-    color: '#000',
-    cursor: 'pointer',
-  }) : null),
-}));
+  &:hover {
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+  }
+`;
 
 export default memo(Button);

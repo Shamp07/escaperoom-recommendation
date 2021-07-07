@@ -1,7 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {
+  useCallback, useMemo, useState, Dispatch,
+  SetStateAction,
+} from 'react';
 import styled from 'styled-components';
 
 import Button from '@atoms/Button';
+import CheckButton from '@atoms/CheckButton';
+import * as T from '@types';
 import tempData from './question.json';
 
 interface Question {
@@ -18,35 +23,43 @@ interface Answer {
 interface Props {
   moveToStart(): void;
   moveToRecommend(): void;
+  answer: T.Answer;
+  setAnswer: Dispatch<SetStateAction<T.Answer>>;
 }
 
-const Quiz = ({ moveToStart, moveToRecommend }: Props) => {
-  const [questions, setQuestions] = useState<Question[]>(tempData);
+const Quiz = ({
+  moveToStart, moveToRecommend, answer, setAnswer,
+}: Props) => {
+  const [questions] = useState<Question[]>(tempData);
   const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
+
   const isLast = index === questions.length - 1;
 
   const prev = useCallback(() => {
     if (!index) moveToStart();
-
-    setIndex((prevState) => prevState - 1);
+    else setIndex((prevState) => prevState - 1);
   }, [!index]);
 
   const next = useCallback(() => {
     if (isLast) moveToRecommend();
-
-    setIndex((prevState) => prevState + 1);
+    else setIndex((prevState) => prevState + 1);
   }, [isLast]);
 
   const onCheck = useCallback((id: number) => {
-    setAnswers((prevState) => [...prevState, id]);
+    setAnswer((prevState) => ({ ...prevState, [index]: [id] }));
   }, []);
 
   const answerList = useMemo(() => (
     questions[index].answers.map(({ id, text }) => (
-      <Button key={id} id={id} text={text} onCheck={onCheck} isChecked={answers.includes(id)} />
+      <CheckButton
+        key={id}
+        id={id}
+        text={text}
+        onClick={onCheck}
+        isChecked={answer[index]?.includes(id)}
+      />
     ))
-  ), [index, answers]);
+  ), [index, answer[index]]);
 
   return (
     <>
