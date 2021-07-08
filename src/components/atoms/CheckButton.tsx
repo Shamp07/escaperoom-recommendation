@@ -5,17 +5,18 @@ import Button from '@atoms/Button';
 
 interface Props {
   id: number;
+  index: number;
   text: string;
   isChecked: boolean;
   onClick(id: number): void;
 }
 
 const CheckButton = ({
-  id, text, isChecked, onClick,
+  id, text, index, isChecked, onClick,
 }: Props) => {
   const onCheck = useCallback(() => {
     onClick(id);
-  }, []);
+  }, [index]);
 
   return (
     <Root isChecked={isChecked}>

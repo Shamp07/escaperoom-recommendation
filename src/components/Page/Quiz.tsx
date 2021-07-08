@@ -46,13 +46,27 @@ const Quiz = ({
   }, [isLast]);
 
   const onCheck = useCallback((id: number) => {
-    setAnswer((prevState) => ({ ...prevState, [index]: [id] }));
-  }, []);
+    setAnswer((prevState) => {
+      if (prevState[index]) {
+        const checkedIndex = prevState[index].findIndex((idx) => idx === id);
+        if (checkedIndex > -1) {
+          const prevAnswer = [...prevState[index]];
+          prevAnswer.splice(checkedIndex, 1);
+
+          return ({ ...prevState, [index]: prevAnswer });
+        }
+        return ({ ...prevState, [index]: [...prevState[index], id] });
+      }
+
+      return ({ ...prevState, [index]: [id] });
+    });
+  }, [index]);
 
   const answerList = useMemo(() => (
     questions[index].answers.map(({ id, text }) => (
       <CheckButton
         key={id}
+        index={index}
         id={id}
         text={text}
         onClick={onCheck}
