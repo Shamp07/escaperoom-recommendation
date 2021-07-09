@@ -85,7 +85,7 @@ const Quiz = ({
       </AnswerWrapper>
       <ButtonWrapper>
         <Button text="이전" onClick={prev} />
-        <Button text="다음" onClick={next} />
+        <Button text="다음" onClick={next} disabled={!answer[index]?.length} />
       </ButtonWrapper>
     </>
   );
