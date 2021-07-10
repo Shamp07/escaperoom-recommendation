@@ -16,6 +16,7 @@
   },
   "include": [
     "./src",
+    "./data",
     "webpack.config.ts"
   ]
 }

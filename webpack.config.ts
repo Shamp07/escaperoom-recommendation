@@ -21,6 +21,13 @@ const config: Configuration = {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[hash].[ext]',
+        },
+      },
     ],
   },
   output: {

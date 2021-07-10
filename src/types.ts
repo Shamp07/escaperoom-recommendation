@@ -1,6 +1,6 @@
 export enum Page {
   START = 'start',
-  QUIZ = 'quiz',
+  SURVEY = 'survey',
   RECOMMEND = 'recommend',
 }
 

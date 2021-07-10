@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Button from '@atoms/Button';
 import CheckButton from '@atoms/CheckButton';
 import * as T from '@types';
-import tempData from './question.json';
+import tempData from '../../../data/question.json';
 
 interface Question {
   readonly id: number;
@@ -27,7 +27,7 @@ interface Props {
   setAnswer: Dispatch<SetStateAction<T.Answer>>;
 }
 
-const Quiz = ({
+const Survey = ({
   moveToStart, moveToRecommend, answer, setAnswer,
 }: Props) => {
   const [questions] = useState<Question[]>(tempData);
@@ -115,4 +115,4 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default Quiz;
+export default Survey;

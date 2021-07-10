@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import Button from '@atoms/Button';
 
 interface Props {
-  moveToQuiz(): void;
+  moveToSurvey(): void;
 }
 
-const Start = ({ moveToQuiz }: Props) => (
+const Start = ({ moveToSurvey }: Props) => (
   <Root>
     <h1>
       방탈출 테마 추천
@@ -15,7 +15,7 @@ const Start = ({ moveToQuiz }: Props) => (
     <p>
       해당 페이지는 방탈출을 추천해주는 시스템입니다.
     </p>
-    <Button text="시작하기!" onClick={moveToQuiz} />
+    <Button text="시작하기!" onClick={moveToSurvey} />
   </Root>
 );
 

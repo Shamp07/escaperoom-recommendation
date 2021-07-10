@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import * as T from '@types';
 import Start from './Start';
-import Quiz from './Quiz';
+import Survey from './Survey';
 import Recommend from './Recommend';
 
 const Page = () => {
@@ -14,8 +14,8 @@ const Page = () => {
     setPage(T.Page.START);
   }, []);
 
-  const moveToQuiz = useCallback(() => {
-    setPage(T.Page.QUIZ);
+  const moveToSurvey = useCallback(() => {
+    setPage(T.Page.SURVEY);
   }, []);
 
   const moveToRecommend = useCallback(() => {
@@ -25,10 +25,10 @@ const Page = () => {
   const content = (() => {
     switch (page) {
       case T.Page.START:
-        return <Start moveToQuiz={moveToQuiz} />;
-      case T.Page.QUIZ:
+        return <Start moveToSurvey={moveToSurvey} />;
+      case T.Page.SURVEY:
         return (
-          <Quiz
+          <Survey
             moveToStart={moveToStart}
             moveToRecommend={moveToRecommend}
             answer={answer}
@@ -38,7 +38,7 @@ const Page = () => {
       case T.Page.RECOMMEND:
         return <Recommend answer={answer} />;
       default:
-        return <Start moveToQuiz={moveToQuiz} />;
+        return <Start moveToSurvey={moveToSurvey} />;
     }
   })();
 
