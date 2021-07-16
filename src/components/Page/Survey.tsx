@@ -1,13 +1,13 @@
 import React, {
   useCallback, useMemo, useState, Dispatch,
-  SetStateAction,
+  SetStateAction, useEffect,
 } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Button from '@atoms/Button';
 import CheckButton from '@atoms/CheckButton';
 import * as T from '@types';
-import tempData from '../../../data/question.json';
 
 interface Question {
   readonly id: number;
@@ -30,10 +30,18 @@ interface Props {
 const Survey = ({
   moveToStart, moveToRecommend, answer, setAnswer,
 }: Props) => {
-  const [questions] = useState<Question[]>(tempData);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [index, setIndex] = useState(0);
 
   const isLast = index === questions.length - 1;
+
+  useEffect(() => {
+    axios.get('https://roomescapesystem.herokuapp.com/survey')
+      .then((result) => {
+        const { data } = result;
+        setQuestions(data);
+      });
+  }, []);
 
   const prev = useCallback(() => {
     if (!index) moveToStart();
@@ -63,7 +71,7 @@ const Survey = ({
   }, [index]);
 
   const answerList = useMemo(() => (
-    questions[index].answers.map(({ id, text }) => (
+    questions.length ? questions[index].answers.map(({ id, text }) => (
       <CheckButton
         key={id}
         index={index}
@@ -72,8 +80,10 @@ const Survey = ({
         onClick={onCheck}
         isChecked={answer[index]?.includes(id)}
       />
-    ))
-  ), [index, answer[index]]);
+    )) : null
+  ), [index, answer[index], questions.length]);
+
+  if (!questions.length) return null;
 
   return (
     <>

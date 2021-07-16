@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import * as T from '@types';
+import Button from '@atoms/Button';
+import axios from 'axios';
 import tempImage from '../../../data/images/temp_escape_logo.jpg';
 
 interface Props {
@@ -9,9 +11,17 @@ interface Props {
 }
 
 const Recommend = ({ answer }: Props) => {
-  useEffect(() => {
-    // TODO
-  }, []);
+  // TODO
+  // const [theme, setTheme] = useState(null);
+  // useEffect(() => {
+  //   axios.get('https://roomescapesystem.herokuapp.com/result', {
+  //     params: answer,
+  //   })
+  //     .then((result) => {
+  //       const { data } = result;
+  //       setTheme(data);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -22,6 +32,17 @@ const Recommend = ({ answer }: Props) => {
         /
         지점: 방탈출 지점
       </Info>
+      <Button
+        text="더 알아보기"
+        onClick={() => {}}
+      />
+      <Button
+        text="이 테마는 이미 했어요!"
+        onClick={() => {}}
+      />
+      <span>
+        이미 한 테마 목록은 쿠키에 저장됩니다. 초기화를 원하면 브라우저에서 쿠키를 초기화시키세요!
+      </span>
     </>
   );
 };
