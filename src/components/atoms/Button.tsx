@@ -32,6 +32,7 @@ const Root = styled.div`
   max-width: 25rem;
   width: 100%;
   cursor: not-allowed;
+  margin: 0 auto;
 `;
 
 const RowButton = styled.button(({ disabled }) => ({

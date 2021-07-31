@@ -9,15 +9,16 @@ import Button from '@atoms/Button';
 import CheckButton from '@atoms/CheckButton';
 import * as T from '@types';
 
-interface Question {
-  readonly id: number;
-  readonly text: string;
-  readonly answers: Answer[];
+enum AnswerType {
+  SINGLE = 'single',
+  MULTI = 'multi',
 }
 
-interface Answer {
-  id: number;
-  text: string;
+interface Question {
+  readonly id: string;
+  readonly context: string;
+  readonly answers: string[];
+  readonly type: AnswerType;
 }
 
 interface Props {
@@ -34,12 +35,14 @@ const Survey = ({
   const [index, setIndex] = useState(0);
 
   const isLast = index === questions.length - 1;
+  const isMoreColumn = questions.length >= 10;
+  const answerType = useMemo(() => questions[index] && questions[index].type, [questions[index]]);
 
   useEffect(() => {
-    axios.get('https://roomescapesystem.herokuapp.com/survey')
+    axios.get('https://roomescapesystem.herokuapp.com/api/survey')
       .then((result) => {
         const { data } = result;
-        setQuestions(data);
+        setQuestions(data.questions);
       });
   }, []);
 
@@ -71,26 +74,33 @@ const Survey = ({
   }, [index]);
 
   const answerList = useMemo(() => (
-    questions.length ? questions[index].answers.map(({ id, text }) => (
+    questions.length ? questions[index].answers.map((text, idx) => (
       <CheckButton
-        key={id}
+        /* eslint-disable-next-line react/no-array-index-key */
+        key={idx}
         index={index}
-        id={id}
+        id={idx}
         text={text}
         onClick={onCheck}
-        isChecked={answer[index]?.includes(id)}
+        isChecked={answer[index]?.includes(idx)}
       />
     )) : null
   ), [index, answer[index], questions.length]);
+
+  const multiSelectionText = useMemo(() => (
+    answerType === AnswerType.MULTI
+      ? <div>(다중 선택 가능)</div> : null
+  ), [answerType]);
 
   if (!questions.length) return null;
 
   return (
     <>
       <Title>
-        {questions[index].text}
+        {questions[index].context}
+        {multiSelectionText}
       </Title>
-      <AnswerWrapper>
+      <AnswerWrapper isMoreColumn={isMoreColumn}>
         {answerList}
       </AnswerWrapper>
       <ButtonWrapper>
@@ -104,16 +114,26 @@ const Survey = ({
 const Title = styled.h1`
   font-size: 3.1rem;
   margin-bottom: 2rem;
-`;
-
-const AnswerWrapper = styled.div`
-  width: 100%;
-  max-width: 25rem;
+  
   & > div {
-    margin-bottom: 1rem;
-    width: 100%;
+    text-align: center;
+    font-size: 2rem;
   }
 `;
+
+interface MoreColumnProp {
+  isMoreColumn: boolean;
+}
+
+const AnswerWrapper = styled.div<MoreColumnProp>(({ isMoreColumn }) => ({
+  width: '100%',
+  maxWidth: '25rem',
+
+  '& > div': {
+    marginBottom: '1rem',
+    width: '100%',
+  },
+}));
 
 const ButtonWrapper = styled.div`
   display: flex;
