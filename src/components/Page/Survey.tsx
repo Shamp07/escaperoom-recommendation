@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import Button from '@atoms/Button';
 import CheckButton from '@atoms/CheckButton';
+import Spinner from '@atoms/Spinner';
 import * as T from '@types';
 
 enum AnswerType {
@@ -33,6 +34,7 @@ const Survey = ({
 }: Props) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [index, setIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const isLast = index === questions.length - 1;
   const isMoreColumn = questions.length >= 10;
@@ -43,6 +45,7 @@ const Survey = ({
       .then((result) => {
         const { data } = result;
         setQuestions(data.questions);
+        setIsLoaded(true);
       });
   }, []);
 
@@ -92,7 +95,7 @@ const Survey = ({
       ? <div>(다중 선택 가능)</div> : null
   ), [answerType]);
 
-  if (!questions.length) return null;
+  if (!isLoaded) return <Spinner />;
 
   return (
     <>
